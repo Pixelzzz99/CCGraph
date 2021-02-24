@@ -6,9 +6,6 @@
 class DeepthSearchSolve : public ConnectedGraph
 {
 private:
-    std::vector<bool> used;
-    std::vector<int> order;
-    std::vector<int> component;
     void setMatrix(std::vector<int>);
     void setGraphAndReverseGraph(int n);
     void resizeMatrix();
@@ -17,7 +14,7 @@ private:
     std::vector<int> deepthFirstSearch2(int v);
     
 public:
-    DeepthSearchSolve(TaskGenerator task);
+    DeepthSearchSolve(TaskGenerator* task);
     DeepthSearchSolve(int n, std::vector<int> matrix);
     ~DeepthSearchSolve() = default;
     void solve() override;
