@@ -1,8 +1,10 @@
 #include "DeepthSearchSolve.h"
 
-DeepthSearchSolve::DeepthSearchSolve(TaskGenerator task)
-{
-    
+DeepthSearchSolve::DeepthSearchSolve(TaskGenerator* task)
+{  
+    setCountOfVertex_N(task->get_N());
+    resizeMatrix();
+    //TODO set graph form TaskGenerator
 }
 
 DeepthSearchSolve::DeepthSearchSolve(int n, std::vector<int> matrix)
