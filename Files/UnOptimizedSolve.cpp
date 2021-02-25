@@ -3,29 +3,35 @@
 UnOptimizedSolve::UnOptimizedSolve(TaskGenerator *task)
 {
     setCountOfVertex_N(task->get_N());
-    resizeRosters();
-    //TODO set Graph from TaskGenerator
+    setGraphFromTaskGenerator(task->get_Graph());
+}
+
+void UnOptimizedSolve::setGraphFromTaskGenerator(std::vector<std::pair<int, int>> graph)
+{
+    used.resize(getCountOfVertex_N() + 1);
+    _graph.resize(getCountOfVertex_N() + 1);
+    _graph_reverse.resize(getCountOfVertex_N() + 1);
+    for (int i = 0; i < getCountOfVertex_N() + 1; i++)
+    {
+        _graph[i].resize(getCountOfVertex_N() + 1);
+        _graph_reverse[i].resize(getCountOfVertex_N() + 1);
+    }
+    for (auto element : graph)
+    {
+        int i = element.first;
+        int j = element.second;
+        _graph[i][j] = _graph_reverse[j][i] = 1;
+    }
 }
 
 UnOptimizedSolve::UnOptimizedSolve(int n, std::vector<int> matrix)
 {
     setCountOfVertex_N(n);
-    resizeRosters();
     resizeMatrix();
     setMatrix(matrix);
     setGraphAndReverseGraph(n);
 }
 
-void UnOptimizedSolve::resizeRosters()
-{
-    RosterOne.resize(getCountOfVertex_N());
-    RosterTwo.resize(getCountOfVertex_N());
-    for (int i = 0; i < getCountOfVertex_N(); i++)
-    {
-        RosterOne[i].resize(getCountOfVertex_N());
-        RosterTwo[i].resize(getCountOfVertex_N());
-    }
-}
 
 void UnOptimizedSolve::resizeMatrix()
 {
@@ -60,7 +66,7 @@ void UnOptimizedSolve::dfs1(int v)
     used[v] = true;
     for (int i = 1; i <= getCountOfVertex_N(); i++)
     {
-        if (!RosterOne[v][i] || used[i])
+        if (!_graph[v][i] || used[i])
             continue;
         dfs1(i);
     }
@@ -73,13 +79,13 @@ void UnOptimizedSolve::dfs2(int v)
     component.push_back(v);
     for (int i = 1; i <= getCountOfVertex_N(); i++)
     {
-        if (!RosterTwo[v][i] || used[i])
+        if (!_graph_reverse[v][i] || used[i])
             continue;
         dfs2(i);
     }
 }
 
-void UnOptimizedSolve::solve()
+int UnOptimizedSolve::solve()
 {
     int n = getCountOfVertex_N();
     for (int i = 1; i <= n; i++)
@@ -87,16 +93,19 @@ void UnOptimizedSolve::solve()
             dfs1(i);
     for (int i = 1; i <= n; i++)
         used[i] = false;
-
+    int countOfComponents = 0;
     for (int i = 1; i <= n; i++)
     {
         int v = order[n - i];
-        if (!used[v])
-            dfs2(v);
-        std::cout << "New Compopent ";
-        for (int x : component)
-            std::cout << x << " ";
-        std::cout << std::endl;
+        if (used[v])
+            continue;
+        dfs2(v);
+        countOfComponents++;
+        //std::cout << "New Compopent ";
+        //for (int x : component)
+        //    std::cout << x << " ";
+        //std::cout << std::endl;
         component.clear();
     }
+    return countOfComponents;
 }

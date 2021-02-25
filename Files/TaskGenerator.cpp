@@ -7,6 +7,12 @@ TaskGenerator::TaskGenerator()
     generateGraph();
 }
 
+TaskGenerator::TaskGenerator(int n)
+{
+    this->n = n;
+    generateGraph();
+}
+
 int TaskGenerator::Randomizator(int min, int max)
 {
     static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
@@ -28,30 +34,32 @@ void TaskGenerator::generateGraph()
         id_v++;
         count_d--;
     }
-
-    m = n - 1;
+    
+    int m = n - 1;
     int it = Randomizator(0, 100);
     while (it--)
     {
         int pos1 = Randomizator(0, v.size() - 1);
         int pos2 = Randomizator(0, v.size() - 1);
-        if (pos1 == pos2) continue;
+        if (pos1 == pos2)
+            continue;
         int v1 = v[pos1], v2 = v[pos2];
-        if (mp.count({v1, v2})) continue;
+        if (mp.count({v1, v2}))
+            continue;
         mp[{v1, v2}] = 1;
         graph.push_back({v1, v2});
         m++;
+    }
+    for (int i = 0; i < graph.size(); i++)
+    {
+        if (rand() % 2)
+            std::swap(graph[i].first, graph[i].second);
     }
 }
 
 int TaskGenerator::get_N()
 {
     return n;
-}
-
-int TaskGenerator::get_M()
-{
-    return m;
 }
 
 std::vector<std::pair<int, int>> TaskGenerator::get_Graph()

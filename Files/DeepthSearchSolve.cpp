@@ -1,10 +1,23 @@
 #include "DeepthSearchSolve.h"
 
-DeepthSearchSolve::DeepthSearchSolve(TaskGenerator* task)
-{  
+DeepthSearchSolve::DeepthSearchSolve(TaskGenerator *task)
+{
     setCountOfVertex_N(task->get_N());
-    resizeMatrix();
-    //TODO set graph form TaskGenerator
+    setGraphFromTaskGenerator(task->get_Graph());
+}
+
+void DeepthSearchSolve::setGraphFromTaskGenerator(std::vector<std::pair<int, int>> graph)
+{
+    used.resize(getCountOfVertex_N() + 1);
+    _graph.resize(getCountOfVertex_N() + 1);
+    _graph_reverse.resize(getCountOfVertex_N() + 1);
+    for (auto element : graph)
+    {
+        int i = element.first;
+        int j = element.second;
+        _graph[i].push_back(j);
+        _graph_reverse[j].push_back(i);
+    }
 }
 
 DeepthSearchSolve::DeepthSearchSolve(int n, std::vector<int> matrix)
@@ -71,7 +84,7 @@ std::vector<int> DeepthSearchSolve::deepthFirstSearch2(int v)
     return component;
 }
 
-void DeepthSearchSolve::solve()
+int DeepthSearchSolve::solve()
 {
     used.assign(getCountOfVertex_N() + 1, false);
     for (int i = 1; i < getCountOfVertex_N(); i++)
@@ -83,18 +96,20 @@ void DeepthSearchSolve::solve()
     }
 
     used.assign(getCountOfVertex_N() + 1, false);
-
+    int countOfComponents = 0;
     for (int i = order.size() - 1; i >= 0; i--)
     {
         int v = order[i];
         if (used[v])
             continue;
         deepthFirstSearch2(v);
+        countOfComponents++;
 
-        for (int x : component)
-        {
-            std::cout << x << " ";
-        }
-        std::cout << std::endl;
+        //for (int x : component)
+        //{
+        //    std::cout << x << " ";
+        //}
+        //std::cout << std::endl;
     }
+    return countOfComponents;
 }

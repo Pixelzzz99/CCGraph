@@ -9,7 +9,6 @@ class TaskGenerator
 {
 private:
     int n;
-    int m;
     std::vector<std::pair<int, int>> graph;
 
     std::map<std::pair<int, int>, bool> mp;
@@ -18,8 +17,8 @@ private:
 
 public:
     int get_N();
-    int get_M();
     std::vector<std::pair<int, int>> get_Graph();
     TaskGenerator();
+    TaskGenerator(int n);
     ~TaskGenerator() = default;
 };

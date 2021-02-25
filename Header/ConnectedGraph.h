@@ -18,5 +18,5 @@ public:
     int getCountOfVertex_N();
     void setCountOfVertex_N(int new_n);
     ~ConnectedGraph() = default;
-    virtual void solve() = 0;
+    virtual int solve() = 0;
 };

@@ -72,6 +72,7 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "connectedgraph.h": "c"
+        "connectedgraph.h": "c",
+        "taskgenerator.h": "c"
     }
 }
